@@ -16,22 +16,49 @@ fn main() {
         input_vec.push(value);
     }
 
-    // TODO - Iterate and find the two numbers that sum to 2020.
+    let result1 = sum_of_two(&mut input_vec, &sum);
+    let result2 = sum_of_three(&mut input_vec, &sum);
+    println!("Answer #1 found! {} x {} = {}", result1.0, result1.1, result1.0 * result1.1);
+    println!("Answer #2 found! {} x {} x {} = {}", result2.0, result2.1, result2.2, result2.0 * result2.1 * result2.2);
+}
+
+fn sum_of_two(input: &mut Vec<i32>, sum: &i32) -> (i32, i32) {
     let mut first_num = 0;
     let mut second_num = 0;
     let mut found = false;
-    for i in 0..input_vec.len() {
+    for i in 0..input.len() {
         if found { break; }
-        for j in 0..input_vec.len() {
-            first_num = input_vec[i];
-            if first_num + input_vec[j] == sum {
-                second_num = input_vec[j];
+        for j in 0..input.len() {
+            first_num = input[i];
+            if first_num + input[j] == *sum {
+                second_num = input[j];
                 found = true;
                 break;
             }
         }
     }
+    (first_num, second_num)
+}
 
-    // TODO - Multiply the two numbers together.
-    println!("Answer found! {} x {} = {}", first_num, second_num, first_num * second_num);
+fn sum_of_three(input: &mut Vec<i32>, sum: &i32) -> (i32, i32, i32) {
+    let mut first_num = 0;
+    let mut second_num = 0;
+    let mut third_num = 0;
+    let mut found = false;
+    for i in 0..input.len() {
+        if found { break; }
+        for j in 0..input.len() {
+            if found { break; }
+            for k in 0..input.len() {
+                first_num = input[i];
+                second_num = input[j];
+                if first_num + second_num + input[k] == *sum {
+                    third_num = input[k];
+                    found = true;
+                    break;
+                }
+            }
+        }
+    }
+    (first_num, second_num, third_num)
 }
