@@ -2,13 +2,13 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 fn main() {
-    // TODO - Read input file
+    // Read input file
     let filename = "./input";
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
     let sum = 2020;
 
-    // TODO - Convert input lines to numbers (i32)
+    // Convert input lines to numbers (i32)
     let mut input_vec = Vec::new();
     for line in reader.lines() {
         let line = line.unwrap();
