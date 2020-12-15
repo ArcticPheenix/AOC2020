@@ -13,15 +13,22 @@ fn main() {
         let line = line.unwrap();
         input_vec.push(line);
     }
-    let mut count = 0;
+    let mut count_old = 0;
+    let mut count_new = 0;
     for record in input_vec.iter() {
-        let parsed_record = parse_record(record);
-        let valid = compare_old(parsed_record.0, parsed_record.1, parsed_record.2, parsed_record.3);
-        if valid {
-            count += 1;
+        let parsed_record_old = parse_record(record);
+        let parsed_record_new = parsed_record_old.clone();
+        let valid_old = compare_old(parsed_record_old.0, parsed_record_old.1, parsed_record_old.2, parsed_record_old.3);
+        if valid_old {
+            count_old += 1;
+        }
+        let valid_new = compare_new(parsed_record_new.0, parsed_record_new.1, parsed_record_new.2, parsed_record_new.3);
+        if valid_new {
+            count_new += 1;
         }
     }
-    println!("Total count of valid passwords: {}", count);
+    println!("Total count of valid old passwords: {}", count_old);
+    println!("Total count of valid new passwords: {}", count_new);
 }
 
 // Implement custom parsing logic for input file lines.
@@ -58,6 +65,25 @@ fn compare_old(min: i32, max: i32, character: String, password: String) -> bool 
         }
     }
     if count >= min && count <= max {
+        return true;
+    }
+    
+    false
+}
+
+fn compare_new(min: i32, max: i32, character: String, password: String) -> bool {
+    let mut c: char = '-';
+    for ch in character.chars() {
+        c = ch;
+    }
+    let min = min as usize;
+    let max = max as usize;
+    let password_min = password.chars().nth(min - 1).unwrap();
+    let password_max = password.chars().nth(max - 1).unwrap();
+    if password_min == c && password_max != c {
+        return true;
+    }
+    if password_min != c && password_max == c {
         return true;
     }
     
