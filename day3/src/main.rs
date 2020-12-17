@@ -17,7 +17,6 @@ fn main() {
     let mut tree_count = 0;
     for i in 0..input_vec.len() {
         if i == 0 {
-            // println!("Skipping first line.");
             continue;
         }
         let record = input_vec[i].to_string();
@@ -34,7 +33,6 @@ fn main() {
 
 fn is_tree(record: String, index: usize) -> bool {
     let mut hit = false;
-    // println!("Index passed in: {}", index);
     let mut string = String::new();
     let mut i = 0;
     let chars: Vec<char> = record.chars().collect();
@@ -54,10 +52,8 @@ fn is_tree(record: String, index: usize) -> bool {
     }
     println!("{}", string);
     let c = record.chars().nth(index as usize).unwrap();
-    // println!("Character in record: {}", c);
     if c == '#' {
         hit = true;
-        // println!("Hit!");
     }
     hit
 }
