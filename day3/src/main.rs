@@ -13,32 +13,51 @@ fn main() {
         let line = line.unwrap();
         input_vec.push(line);
     }
-    let mut index = 0;
+    let mut record_index = 0;
     let mut tree_count = 0;
     for i in 0..input_vec.len() {
         if i == 0 {
+            // println!("Skipping first line.");
             continue;
         }
-        index += 3;
-        if index >= 31 {
-            index = 31 % 3
-        }
         let record = input_vec[i].to_string();
-        if is_tree(record, index) {
+        record_index += 3;
+        if record_index >= record.len() {
+            record_index = record_index % record.len();
+        }
+        if is_tree(record, record_index) {
             tree_count += 1;
         }
     }
     println!("Total trees hit: {}", tree_count);
 }
 
-fn is_tree(record: String, index: i32) -> bool {
+fn is_tree(record: String, index: usize) -> bool {
     let mut hit = false;
-    println!("Index passed in: {}", index);
-    println!("Record value: {}", record);
+    // println!("Index passed in: {}", index);
+    let mut string = String::new();
+    let mut i = 0;
+    let chars: Vec<char> = record.chars().collect();
+    for c in chars {
+        if i == index && c == '#' {
+            string.push('X');
+            i += 1;
+            continue;
+        }
+        if i == index && c == '.' {
+            string.push('O');
+            i += 1;
+            continue;
+        }
+        string.push(c);
+        i += 1;
+    }
+    println!("{}", string);
     let c = record.chars().nth(index as usize).unwrap();
+    // println!("Character in record: {}", c);
     if c == '#' {
         hit = true;
-        println!("Hit!");
+        // println!("Hit!");
     }
     hit
 }
