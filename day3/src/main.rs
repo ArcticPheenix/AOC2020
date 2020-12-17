@@ -40,6 +40,7 @@ fn is_tree(record: String, index: usize) -> bool {
         if i == index && c == '#' {
             string.push('X');
             i += 1;
+            hit = true;
             continue;
         }
         if i == index && c == '.' {
@@ -51,9 +52,6 @@ fn is_tree(record: String, index: usize) -> bool {
         i += 1;
     }
     println!("{}", string);
-    let c = record.chars().nth(index as usize).unwrap();
-    if c == '#' {
-        hit = true;
-    }
+
     hit
 }
