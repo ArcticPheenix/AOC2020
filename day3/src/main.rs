@@ -1,6 +1,11 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+struct Slope {
+    x: i32,
+    y: i32
+}
+
 fn main() {
     // Read input file
     let filename = "./input";
@@ -13,22 +18,47 @@ fn main() {
         let line = line.unwrap();
         input_vec.push(line);
     }
-    let mut record_index = 0;
-    let mut tree_count = 0;
-    for i in 0..input_vec.len() {
-        if i == 0 {
-            continue;
+    
+    let mut tree_vec: Vec<i32> = Vec::new();
+    let slope_vec = vec![Slope{x: 1, y: 1}, Slope{x: 3, y: 1}, Slope{x: 5, y: 1}, Slope{x: 7, y: 1}, Slope{x: 1, y: 2}];
+    for slope in slope_vec {
+        println!("Slope: {}/{}", slope.x, slope.y);
+        let mut record_index = 0;
+        let mut tree_count = 0;
+        let mut skipped_count = 0;
+        for i in 0..input_vec.len() {
+            let record = input_vec[i].to_string();
+            if i == 0 {
+                println!("{}", record);
+                continue;
+            }
+            if skipped_count < slope.y - 1 {
+                skipped_count += 1;
+                println!("{}", record);
+                continue;
+            }
+            record_index += slope.x as usize;
+            if record_index >= record.len() {
+                record_index = record_index % record.len();
+            }
+            if is_tree(record, record_index) {
+                tree_count += 1;
+            }
+            skipped_count = 0;
         }
-        let record = input_vec[i].to_string();
-        record_index += 3;
-        if record_index >= record.len() {
-            record_index = record_index % record.len();
-        }
-        if is_tree(record, record_index) {
-            tree_count += 1;
+        println!("Tree count for Slope {}/{}: {}", slope.x, slope.y, tree_count);
+        tree_vec.push(tree_count);
+    }
+
+    let mut tree_count:i64 = 0;
+    for tc in tree_vec {
+        if tree_count == 0 {
+            tree_count = tc as i64;
+        } else {
+            tree_count = tree_count * tc as i64;
         }
     }
-    println!("Total trees hit: {}", tree_count);
+    println!("Tree count: {}", tree_count);
 }
 
 fn is_tree(record: String, index: usize) -> bool {
