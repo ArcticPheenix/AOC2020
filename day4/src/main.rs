@@ -26,15 +26,17 @@ impl Passport {
         false
     }
 
-    fn new(& mut self) {
-        self.byr = "".to_string();
-        self.iyr = "".to_string();
-        self.eyr = "".to_string();
-        self.hgt = "".to_string();
-        self.hcl = "".to_string();
-        self.ecl = "".to_string();
-        self.pid = "".to_string();
-        self.cid = "".to_string();
+    fn new() -> Self {
+        Passport {
+            byr: "".to_string(),
+            iyr: "".to_string(),
+            eyr: "".to_string(),
+            hgt: "".to_string(),
+            hcl: "".to_string(),
+            ecl: "".to_string(),
+            pid: "".to_string(),
+            cid: "".to_string()
+        }
     }
 }
 
@@ -50,4 +52,15 @@ fn main() {
         let line = line.unwrap();
         input_vec.push(line);
     }
+
+    // Begin processing input data.
+    let mut passport_vec: Vec<Passport> = Vec::new();
+    
+    loop { {
+        // Create Passport object to use while iterating over input_vec.
+        let mut passport = Passport::new();
+        for line in input_vec.iter() {
+            
+        }
+    }}
 }
