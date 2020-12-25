@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+#[derive(Clone, Debug)]
 struct Passport {
     byr: String,
     iyr: String,
@@ -54,13 +55,42 @@ fn main() {
     }
 
     // Begin processing input data.
-    let mut passport_vec: Vec<Passport> = Vec::new();
-    
-    loop { {
-        // Create Passport object to use while iterating over input_vec.
-        let mut passport = Passport::new();
-        for line in input_vec.iter() {
-            
+    let mut count = 0;
+    let mut passport_count = 0;
+    // TODO - Iterate over input_vec.
+    //        Each line should be considered part of a passport record.
+    //        Empty lines should be considered the terminator between passport records.
+    let mut passport = Passport::new();
+    for line in input_vec {
+        if line == "".to_string() {
+            passport_count += 1;
+            if passport.is_valid() {
+                println!("VALID - {:?}", passport);
+                passport = Passport::new();
+                count += 1;
+                continue;
+            }
+            println!("INVALID - {:?}", passport);
+            passport = Passport::new();
+            continue;
         }
-    }}
+        let field_vec: Vec<&str> = line.split_whitespace().collect();
+        for records in field_vec {
+            let record_vec: Vec<&str> = records.split(":").collect();
+            match record_vec[0] {
+                "byr" => passport.byr = record_vec[1].to_string(),
+                "iyr" => passport.iyr = record_vec[1].to_string(),
+                "eyr" => passport.eyr = record_vec[1].to_string(),
+                "hgt" => passport.hgt = record_vec[1].to_string(),
+                "hcl" => passport.hcl = record_vec[1].to_string(),
+                "ecl" => passport.ecl = record_vec[1].to_string(),
+                "pid" => passport.pid = record_vec[1].to_string(),
+                "cid" => passport.cid = record_vec[1].to_string(),
+                _ => continue
+            }
+        }
+    }
+
+    println!("Total passports: {}", passport_count);
+    println!("Count of valid passports: {}", count);
 }
