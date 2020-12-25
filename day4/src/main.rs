@@ -90,6 +90,13 @@ fn main() {
             }
         }
     }
+    passport_count += 1;
+    if passport.is_valid() {
+        println!("VALID - {:?}", passport);
+        count += 1;
+    } else {
+        println!("INVALID - {:?}", passport);
+    }
 
     println!("Total passports: {}", passport_count);
     println!("Count of valid passports: {}", count);
