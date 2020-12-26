@@ -50,7 +50,7 @@ impl Passport {
         };
         if byr_valid {
             let byr: i32 = self.byr.parse().unwrap();
-            if byr > byr_min_max.0 && byr < byr_min_max.1 {
+            if byr >= byr_min_max.0 && byr <= byr_min_max.1 {
                 byr_valid = true;
             } else {
                 byr_valid = false;
@@ -63,7 +63,7 @@ impl Passport {
         };
         if iyr_valid {
             let iyr: i32 = self.iyr.parse().unwrap();
-            if iyr > iyr_min_max.0 && iyr < iyr_min_max.1 {
+            if iyr >= iyr_min_max.0 && iyr <= iyr_min_max.1 {
                 iyr_valid = true;
             } else {
                 iyr_valid = false;
@@ -76,7 +76,7 @@ impl Passport {
         };
         if eyr_valid {
             let eyr:i32  = self.eyr.parse().unwrap();
-            if eyr > eyr_min_max.0 && eyr < eyr_min_max.1 {
+            if eyr >= eyr_min_max.0 && eyr <= eyr_min_max.1 {
                 eyr_valid = true;
             } else {
                 eyr_valid = false;
@@ -85,12 +85,12 @@ impl Passport {
         // Determine if hgt is valid.
         let mut hgt_valid = false;
         if hgt_cm > 0 {
-            if hgt_cm > hgt_cm_min_max.0 && hgt_cm < hgt_cm_min_max.1 {
+            if hgt_cm >= hgt_cm_min_max.0 && hgt_cm <= hgt_cm_min_max.1 {
                 hgt_valid = true;
             }
         }
         if hgt_in > 0 {
-            if hgt_in > hgt_in_min_max.0 && hgt_in < hgt_in_min_max.1 {
+            if hgt_in >= hgt_in_min_max.0 && hgt_in <= hgt_in_min_max.1 {
                 hgt_valid = true;
             }
         }
