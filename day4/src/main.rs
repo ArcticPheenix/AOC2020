@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use regex::Regex;
 
 #[derive(Clone, Debug)]
 struct Passport {
@@ -15,15 +16,110 @@ struct Passport {
 
 impl Passport {
     fn is_valid(&self) -> bool {
-        if self.byr != "".to_string() 
-        && self.iyr != "".to_string()
-        && self.eyr != "".to_string()
-        && self.hgt != "".to_string()
-        && self.hcl != "".to_string()
-        && self.ecl != "".to_string()
-        && self.pid != "".to_string() {
+        // RegEx for matching years.
+        let year_re = Regex::new(r"^\d{4}$").unwrap();
+        // RegEx for matching height.
+        let hgt_cm_re = Regex::new(r"^\d{3}cm$").unwrap();
+        let hgt_in_re = Regex::new(r"^\d{2}in$").unwrap();
+        // RegEx for matching hair color.
+        let hcl_re = Regex::new(r"^#[0-9a-f]{6}$").unwrap();
+        // RegEx for matching Passport ID.
+        let pid_re = Regex::new(r"^\d{9}$").unwrap();
+
+        let byr_min_max = (1920, 2002);
+        let iyr_min_max = (2010, 2020);
+        let eyr_min_max = (2020, 2030);
+        let hgt_cm_min_max = (150, 193);
+        let hgt_in_min_max = (59, 76);
+
+        let mut hgt_cm: i32 = 0;
+        let mut hgt_in: i32 = 0;
+        if hgt_cm_re.is_match(&self.hgt) {
+            let hgt: Vec<&str> = self.hgt.split("cm").collect();
+            hgt_cm = hgt[0].parse().unwrap();
+        }
+        if hgt_in_re.is_match(&self.hgt) {
+            let hgt: Vec<&str> = self.hgt.split("in").collect();
+            hgt_in = hgt[0].parse().unwrap();
+        }
+
+        // Determine if byr is valid.
+        let mut byr_valid = {
+            self.byr != "".to_string()
+            && year_re.is_match(&self.byr)
+        };
+        if byr_valid {
+            let byr: i32 = self.byr.parse().unwrap();
+            if byr > byr_min_max.0 && byr < byr_min_max.1 {
+                byr_valid = true;
+            } else {
+                byr_valid = false;
+            }
+        }
+        // Determine if iyr is valid.
+        let mut iyr_valid = {
+            self.iyr != "".to_string()
+            && year_re.is_match(&self.iyr)
+        };
+        if iyr_valid {
+            let iyr: i32 = self.iyr.parse().unwrap();
+            if iyr > iyr_min_max.0 && iyr < iyr_min_max.1 {
+                iyr_valid = true;
+            } else {
+                iyr_valid = false;
+            }
+        }
+        // Determine if eyr is valid.
+        let mut eyr_valid = {
+            self.eyr != "".to_string()
+            && year_re.is_match(&self.eyr)
+        };
+        if eyr_valid {
+            let eyr:i32  = self.eyr.parse().unwrap();
+            if eyr > eyr_min_max.0 && eyr < eyr_min_max.1 {
+                eyr_valid = true;
+            } else {
+                eyr_valid = false;
+            }
+        }
+        // Determine if hgt is valid.
+        let mut hgt_valid = false;
+        if hgt_cm > 0 {
+            if hgt_cm > hgt_cm_min_max.0 && hgt_cm < hgt_cm_min_max.1 {
+                hgt_valid = true;
+            }
+        }
+        if hgt_in > 0 {
+            if hgt_in > hgt_in_min_max.0 && hgt_in < hgt_in_min_max.1 {
+                hgt_valid = true;
+            }
+        }
+        // Determine if ecl is valid.
+        // Hair color (hcl) can only be one of the following values:
+        // amb blu brn gry grn hzl oth
+        let mut ecl_valid = false;
+        let ecl: &str = &self.ecl;
+        match ecl {
+            "amb" => ecl_valid = true,
+            "blu" => ecl_valid = true,
+            "brn" => ecl_valid = true,
+            "gry" => ecl_valid = true,
+            "grn" => ecl_valid = true,
+            "hzl" => ecl_valid = true,
+            "oth" => ecl_valid = true,
+            _ => ecl_valid = false
+        }
+
+        if byr_valid
+        && iyr_valid
+        && eyr_valid
+        && hgt_valid
+        && ecl_valid
+        && hcl_re.is_match(&self.hcl)
+        && pid_re.is_match(&self.pid) {
             return true;
         }
+        
         false
     }
 
