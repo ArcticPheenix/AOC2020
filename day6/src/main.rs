@@ -19,5 +19,5 @@ fn main() {
     //        Each "group" is separated by an empty line.
     //        Iterate on the characters for each line, adding the characters to a HashSet (to ensure uniqueness).
     //        When a new line is encountered, add the set to a Vector and then create a new set for the next group.
-    //        After processing is complete, output the total number of "yes" answers there are to STDOUT.
+    //        After processing is complete, output the sum of the number of "yes" answers there are to STDOUT.
 }
