@@ -18,10 +18,27 @@ fn main() {
     }
 
     let mut highest_seat_id = 0;
+    let mut seats: Vec<i32> = Vec::new();
     for pass in input_vec {
         let result = process_boarding_pass(AIRPLANE_ROW_SIZE, AIRPLANE_COLUMN_SIZE, pass);
         if result.2 > highest_seat_id {
             highest_seat_id = result.2
+        }
+        seats.push(result.2);
+    }
+    seats.sort();
+    let mut next_seat = 0;
+    for seat in seats {
+        if next_seat == 0 {
+            next_seat = seat + 1;
+            continue;
+        }
+        if seat == next_seat {
+            next_seat = seat + 1;
+            continue;
+        } else {
+            println!("Potentially empty seat: {}", seat - 1);
+            break;
         }
     }
     println!("Highest Seat ID: {}", highest_seat_id);
