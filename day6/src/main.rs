@@ -20,4 +20,24 @@ fn main() {
     //        Iterate on the characters for each line, adding the characters to a HashSet (to ensure uniqueness).
     //        When a new line is encountered, add the set to a Vector and then create a new set for the next group.
     //        After processing is complete, output the sum of the number of "yes" answers there are to STDOUT.
+    let mut set_vec: Vec<HashSet<char>> = Vec::new();
+    let mut char_set: HashSet<char> = HashSet::new();
+    for line in input_vec {
+        if line == "".to_string() {
+            set_vec.push(char_set);
+            char_set = HashSet::new();
+            continue;
+        }
+        for c in line.chars() {
+            char_set.insert(c);
+        }
+    }
+    // Final push to set_vec
+    set_vec.push(char_set);
+    let mut count = 0;
+    for set in set_vec {
+        count += set.len();
+    }
+
+    println!("Question Count: {}", count);
 }
