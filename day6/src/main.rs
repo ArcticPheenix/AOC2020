@@ -15,29 +15,55 @@ fn main() {
         input_vec.push(line);
     }
 
-    // TODO - Process the input file.
+    let count_1 = process(&input_vec, 1);
+    let count_2 = process(&input_vec, 2);
+
+    println!("Question Count (1): {}", count_1);
+    println!("Question Count (2): {}", count_2);
+}
+
+fn process(input: &Vec<String>, challenge_num: i32) -> i32 {
+    //        Process the input file.
     //        Each "group" is separated by an empty line.
     //        Iterate on the characters for each line, adding the characters to a HashSet (to ensure uniqueness).
     //        When a new line is encountered, add the set to a Vector and then create a new set for the next group.
     //        After processing is complete, output the sum of the number of "yes" answers there are to STDOUT.
-    let mut set_vec: Vec<HashSet<char>> = Vec::new();
-    let mut char_set: HashSet<char> = HashSet::new();
-    for line in input_vec {
-        if line == "".to_string() {
-            set_vec.push(char_set);
-            char_set = HashSet::new();
-            continue;
-        }
-        for c in line.chars() {
-            char_set.insert(c);
-        }
-    }
-    // Final push to set_vec
-    set_vec.push(char_set);
     let mut count = 0;
-    for set in set_vec {
-        count += set.len();
+    if challenge_num == 1 {
+        let mut set_vec: Vec<HashSet<char>> = Vec::new();
+        let mut char_set: HashSet<char> = HashSet::new();
+        for line in input {
+            if *line == "".to_string() {
+                set_vec.push(char_set);
+                char_set = HashSet::new();
+                continue;
+            }
+            for c in line.chars() {
+                char_set.insert(c);
+            }
+        }
+        // Final push to set_vec
+        set_vec.push(char_set);
+        for set in set_vec {
+            count += set.len() as i32;
+        }
     }
+    if challenge_num == 2 {
+        let mut set_vec: Vec<HashSet<char>> = Vec::new();
+        let mut char_set: HashSet<char> = HashSet::new();
+        for line in input {
+            if *line == "".to_string() {
+                set_vec.push(char_set);
+                char_set = HashSet::new();
+                continue;
+            }
+            for c in line.chars() {
+                if char_set.insert(c) {
 
-    println!("Question Count: {}", count);
+                }
+            }
+        }
+    }
+    
+    count
 }
