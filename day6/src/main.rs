@@ -30,6 +30,7 @@ fn process(input: &Vec<String>, challenge_num: i32) -> i32 {
     //        After processing is complete, output the sum of the number of "yes" answers there are to STDOUT.
     let mut count = 0;
     if challenge_num == 1 {
+        // Logic for the first challenge.
         let mut set_vec: Vec<HashSet<char>> = Vec::new();
         let mut char_set: HashSet<char> = HashSet::new();
         for line in input {
@@ -49,19 +50,31 @@ fn process(input: &Vec<String>, challenge_num: i32) -> i32 {
         }
     }
     if challenge_num == 2 {
-        let mut set_vec: Vec<HashSet<char>> = Vec::new();
-        let mut char_set: HashSet<char> = HashSet::new();
+        // Logic for the second challenge.
+        let mut record_vec: Vec<String> = Vec::new();
+        let mut records_vec: Vec<Vec<String>> = Vec::new();
+        let mut unique_answer_count = 0;
         for line in input {
             if *line == "".to_string() {
-                set_vec.push(char_set);
-                char_set = HashSet::new();
+                records_vec.push(record_vec);
+                record_vec = Vec::new();
                 continue;
             }
-            for c in line.chars() {
-                if char_set.insert(c) {
-
+            let record: String = *line;
+            record_vec.push(record);
+        }
+        for record in records_vec {
+            if record.len() == 1 {
+                // Only one record, so the resulting length of the set will equal the number of questions answered uniquely.
+                let mut char_set: HashSet<char> = HashSet::new();
+                for line in record {
+                    for c in line.chars() {
+                        char_set.insert(c);
+                    }
                 }
+                unique_answer_count += char_set.len();
             }
+            let mut char_set: HashSet<char> = HashSet::new();
         }
     }
     
